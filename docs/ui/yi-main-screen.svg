@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Yi 面对面同声传译主界面</title>
+  <desc id="desc">深色背景中的 iPhone 界面，上半屏为对方英文，下半屏为中文，中间显示正在听对方说话。</desc>
+  <rect width="1200" height="760" fill="#061016"/>
+  <circle cx="170" cy="100" r="240" fill="#0B3543" opacity=".42"/>
+  <circle cx="1030" cy="650" r="290" fill="#102C52" opacity=".34"/>
+  <text x="84" y="110" fill="#F8FAFC" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="44" font-weight="700">Yi · 面对面同声传译</text>
+  <text x="86" y="154" fill="#A8BBC5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="21">一台 iPhone，双方自然说话，自动翻译并播报</text>
+  <g transform="translate(451 34)">
+    <rect width="298" height="692" rx="52" fill="#020609" stroke="#29434E" stroke-width="2"/>
+    <rect x="10" y="10" width="278" height="672" rx="44" fill="#0A1820"/>
+    <rect x="105" y="21" width="88" height="24" rx="12" fill="#020405"/>
+    <text x="25" y="58" fill="#A8BBC5" font-size="11" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">9:42</text>
+    <g transform="rotate(180 149 166)">
+      <circle cx="34" cy="94" r="5" fill="#2DD4BF"/>
+      <text x="48" y="99" fill="#A8BBC5" font-size="11" letter-spacing="1.7" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">LISTENING · ENGLISH</text>
+      <text x="24" y="145" fill="#F8FAFC" font-size="22" font-weight="650" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Could you tell me</text>
+      <text x="24" y="174" fill="#F8FAFC" font-size="22" font-weight="650" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">how to get to the station?</text>
+      <text x="24" y="210" fill="#A8BBC5" font-size="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">Live transcript</text>
+    </g>
+    <rect x="10" y="279" width="278" height="126" fill="#0D222B"/>
+    <g fill="#2DD4BF">
+      <rect x="105" y="331" width="4" height="20" rx="2"/><rect x="116" y="322" width="4" height="38" rx="2"/><rect x="127" y="312" width="4" height="58" rx="2"/><rect x="138" y="325" width="4" height="32" rx="2"/><rect x="149" y="305" width="4" height="72" rx="2"/><rect x="160" y="325" width="4" height="32" rx="2"/><rect x="171" y="312" width="4" height="58" rx="2"/><rect x="182" y="322" width="4" height="38" rx="2"/><rect x="193" y="331" width="4" height="20" rx="2"/>
+    </g>
+    <text x="149" y="391" text-anchor="middle" fill="#A8BBC5" font-size="11" letter-spacing="1" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">正在听对方说话</text>
+    <text x="24" y="448" fill="#A8BBC5" font-size="11" letter-spacing="1.6" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">中文 · 即将播报</text>
+    <text x="24" y="500" fill="#F8FAFC" font-size="24" font-weight="650" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">请问去车站怎么走？</text>
+    <text x="24" y="534" fill="#A8BBC5" font-size="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">原文：Could you tell me…</text>
+    <line x1="24" y1="601" x2="274" y2="601" stroke="#29434E"/>
+    <g transform="translate(28 620)" fill="none" stroke="#A8BBC5" stroke-width="2" stroke-linecap="round"><path d="M4 1h18M4 8h18M4 15h12"/></g>
+    <rect x="106" y="614" width="86" height="42" rx="21" fill="#F8FAFC"/>
+    <text x="149" y="640" text-anchor="middle" fill="#0A1820" font-size="13" font-weight="700" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">结束</text>
+    <g transform="translate(244 619)" fill="none" stroke="#A8BBC5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h22l-5-5M24 15H2l5 5"/></g>
+  </g>
+  <g transform="translate(835 264)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+    <circle cx="9" cy="7" r="7" fill="#2DD4BF"/><text x="31" y="14" fill="#F8FAFC" font-size="19" font-weight="600">青绿色：正在收音</text>
+    <circle cx="9" cy="59" r="7" fill="#22D3EE"/><text x="31" y="66" fill="#F8FAFC" font-size="19" font-weight="600">天蓝色：正在翻译</text>
+    <circle cx="9" cy="111" r="7" fill="#F97316"/><text x="31" y="118" fill="#F8FAFC" font-size="19" font-weight="600">橙色：需要注意</text>
+    <text x="0" y="185" fill="#A8BBC5" font-size="16">顶部旋转 180° 给对方阅读</text>
+    <text x="0" y="214" fill="#A8BBC5" font-size="16">底部保持中文，用户一眼看懂</text>
+    <text x="0" y="243" fill="#A8BBC5" font-size="16">播报时暂停上行，防止回声串音</text>
+  </g>
+</svg>
+

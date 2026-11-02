@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Yi · 面对面同声传译 UI 原型</title>
+  <style>
+    :root {
+      --bg: #061016;
+      --surface: #102832;
+      --surface-2: #0d222b;
+      --primary: #2563eb;
+      --live: #2dd4bf;
+      --translating: #22d3ee;
+      --accent: #f97316;
+      --text: #f8fafc;
+      --muted: #a8bbc5;
+      --border: #29434e;
+      --danger: #ff6b5f;
+      --focus: #93c5fd;
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+    body {
+      min-width: 320px;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 4%, rgba(8,145,178,.18), transparent 28rem),
+        radial-gradient(circle at 93% 95%, rgba(37,99,235,.16), transparent 31rem),
+        var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button { font: inherit; }
+    button, [role="button"] { cursor: pointer; }
+    button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+    .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 32px 0 48px; }
+    .masthead { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 26px; }
+    .eyebrow { margin: 0 0 5px; color: var(--live); font-size: .78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(1.75rem, 4vw, 2.65rem); line-height: 1.12; letter-spacing: -.035em; }
+    .lede { max-width: 620px; margin: 10px 0 0; color: var(--muted); }
+    .prototype-label { padding: 9px 13px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .82rem; white-space: nowrap; }
+
+    .workspace { display: grid; grid-template-columns: minmax(260px, 340px) minmax(320px, 1fr); gap: 28px; align-items: start; }
+    .panel { padding: 22px; border: 1px solid var(--border); border-radius: var(--radius-xl); background: rgba(12,31,40,.82); }
+    .panel h2 { margin: 0 0 4px; font-size: 1.1rem; }
+    .panel-copy { margin: 0 0 22px; color: var(--muted); font-size: .9rem; }
+
+    .control-group { margin-bottom: 24px; }
+    .control-label { display: block; margin-bottom: 10px; color: var(--muted); font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .segmented { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .segment {
+      min-height: 44px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      background: #0a1b23;
+      transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+    }
+    .segment:hover { border-color: #49707f; color: var(--text); }
+    .segment[aria-pressed="true"] { border-color: #3b82f6; color: #fff; background: var(--primary); }
+
+    .state-card { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: #0a1b23; }
+    .state-row { display: flex; align-items: center; gap: 10px; }
+    .state-mark { width: 10px; height: 10px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 5px rgba(45,212,191,.1); }
+    .state-title { font-weight: 700; }
+    .state-desc { margin: 7px 0 0 20px; color: var(--muted); font-size: .82rem; }
+
+    .control-stack { display: grid; gap: 10px; margin-top: 22px; }
+    .primary, .secondary {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: opacity 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+    .primary { border: 1px solid var(--primary); color: white; background: var(--primary); }
+    .primary:hover { background: #1d4ed8; }
+    .secondary { border: 1px solid var(--border); color: var(--text); background: transparent; }
+    .secondary:hover { border-color: #49707f; background: rgba(255,255,255,.035); }
+    .icon { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+    .notes { display: grid; gap: 10px; margin-top: 23px; padding-top: 19px; border-top: 1px solid var(--border); }
+    .note { display: grid; grid-template-columns: 10px 1fr; gap: 10px; align-items: start; color: var(--muted); font-size: .82rem; }
+    .note::before { content: ""; width: 6px; height: 6px; margin-top: .43rem; border-radius: 50%; background: var(--translating); }
+
+    .stage { min-height: 740px; display: grid; place-items: center; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-xl); background: linear-gradient(135deg, rgba(16,40,50,.7), rgba(4,10,14,.72)); overflow: hidden; }
+    .phone { width: min(100%, 366px); padding: 9px; border: 1px solid #39515b; border-radius: 48px; background: #020609; box-shadow: 0 32px 90px rgba(0,0,0,.4); }
+    .screen { height: 704px; position: relative; overflow: hidden; border-radius: 40px; background: linear-gradient(180deg, #102832 0%, #081116 47%, #102832 100%); }
+    .island { width: 92px; height: 25px; position: absolute; top: 10px; left: 50%; z-index: 3; transform: translateX(-50%); border-radius: 999px; background: #010304; }
+    .status-bar { height: 55px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 24px 8px; color: var(--muted); font-size: .7rem; }
+    .signal { display: inline-flex; align-items: center; gap: 5px; }
+    .signal svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .partner, .local { height: 235px; padding: 22px 24px; display: flex; flex-direction: column; justify-content: space-between; }
+    .partner { transform: rotate(180deg); }
+    .lang-row { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: .71rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 5px rgba(45,212,191,.09); }
+    .translation { margin: 0; font-size: clamp(1.45rem, 6.3vw, 1.8rem); font-weight: 700; line-height: 1.24; letter-spacing: -.025em; }
+    .source { margin: 9px 0 0; color: var(--muted); font-size: .81rem; line-height: 1.45; }
+
+    .status-zone { height: 126px; position: relative; display: grid; place-items: center; border-block: 1px solid rgba(41,67,78,.7); background: rgba(8,27,35,.82); }
+    .orbital { width: 70px; height: 70px; display: grid; place-items: center; border: 1px solid rgba(45,212,191,.35); border-radius: 50%; }
+    .orbital::before { content: ""; width: 49px; height: 49px; position: absolute; border: 1px solid rgba(45,212,191,.2); border-radius: 50%; }
+    .direction-button { width: 48px; height: 48px; z-index: 2; display: grid; place-items: center; border: 0; border-radius: 50%; color: #052019; background: var(--live); transition: opacity 180ms ease, background 180ms ease; }
+    .direction-button:hover { background: #5eead4; }
+    .direction-button .icon { width: 22px; height: 22px; }
+    .status-copy { position: absolute; bottom: 8px; color: var(--muted); font-size: .69rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+
+    .wave { display: none; height: 48px; align-items: center; gap: 4px; }
+    .wave span { width: 4px; border-radius: 99px; background: var(--live); animation: wave 1s ease-in-out infinite; }
+    .wave span:nth-child(1), .wave span:nth-child(7) { height: 12px; animation-delay: -.1s; }
+    .wave span:nth-child(2), .wave span:nth-child(6) { height: 26px; animation-delay: -.25s; }
+    .wave span:nth-child(3), .wave span:nth-child(5) { height: 39px; animation-delay: -.4s; }
+    .wave span:nth-child(4) { height: 48px; animation-delay: -.55s; }
+    @keyframes wave { 0%,100% { transform: scaleY(.52); opacity: .62; } 50% { transform: scaleY(1); opacity: 1; } }
+    .listening .orbital, .listening .direction-button { display: none; }
+    .listening .wave { display: flex; }
+
+    .playing .direction-button { color: #06202a; background: var(--translating); }
+    .playing .orbital { border-color: rgba(34,211,238,.42); }
+    .playing .orbital::before { border-color: rgba(34,211,238,.22); }
+
+    .toolbar { height: 53px; display: flex; align-items: center; justify-content: space-between; padding: 3px 22px 8px; background: rgba(3,10,14,.45); }
+    .tool-button { width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 13px; color: var(--muted); background: transparent; transition: color 180ms ease, background 180ms ease; }
+    .tool-button:hover { color: var(--text); background: rgba(255,255,255,.05); }
+    .end-button { min-width: 94px; height: 44px; border: 0; border-radius: 999px; color: #081116; background: var(--text); font-weight: 750; }
+    .end-button:hover { opacity: .88; }
+
+    .sr-only { width: 1px; height: 1px; position: absolute; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+    @media (max-width: 840px) {
+      .shell { width: min(100% - 20px, 640px); padding-top: 20px; }
+      .masthead { align-items: flex-start; flex-direction: column; }
+      .workspace { grid-template-columns: 1fr; }
+      .stage { min-height: auto; padding: 20px 10px; }
+      .phone { width: min(100%, 366px); }
+      .panel { order: 2; }
+      .stage { order: 1; }
+    }
+
+    @media (max-width: 390px) {
+      .shell { width: 100%; padding: 16px 8px 32px; }
+      .masthead { padding-inline: 8px; }
+      .prototype-label { white-space: normal; }
+      .panel, .stage { border-radius: 24px; }
+      .stage { padding-inline: 0; background: transparent; border-inline: 0; }
+      .phone { border-radius: 42px; }
+      .screen { height: 680px; border-radius: 35px; }
+      .partner, .local { height: 223px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .wave span { transform: none !important; opacity: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Interactive UI prototype</p>
+        <h1>Yi · 面对面同声传译</h1>
+        <p class="lede">一台 iPhone 放在两个人中间，自动轮流听、译、说。这个原型只演示界面状态，不会调用麦克风或网络。</p>
+      </div>
+      <div class="prototype-label">iPhone · 中文 ↔ 英 / 日 / 韩</div>
+    </header>
+
+    <div class="workspace">
+      <aside class="panel" aria-label="原型控制台">
+        <h2>原型控制台</h2>
+        <p class="panel-copy">切换语言和对话状态，查看一台手机如何同时服务双方。</p>
+
+        <div class="control-group">
+          <span class="control-label">对方语言</span>
+          <div class="segmented" role="group" aria-label="选择对方语言">
+            <button class="segment" type="button" data-language="en" aria-pressed="true">英语</button>
+            <button class="segment" type="button" data-language="ja" aria-pressed="false">日语</button>
+            <button class="segment" type="button" data-language="ko" aria-pressed="false">韩语</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <span class="control-label">当前状态</span>
+          <div class="state-card" aria-live="polite">
+            <div class="state-row"><span class="state-mark"></span><span id="stateTitle" class="state-title">准备开始</span></div>
+            <p id="stateDesc" class="state-desc">面对面放好手机，点击开始对话。</p>
+          </div>
+        </div>
+
+        <div class="control-stack">
+          <button id="startButton" class="primary" type="button">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <span>开始对话</span>
+          </button>
+          <button id="nextButton" class="secondary" type="button">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>
+            <span>下一状态</span>
+          </button>
+        </div>
+
+        <div class="notes" aria-label="设计说明">
+          <div class="note">上半屏旋转给对方阅读，下半屏保持中文。</div>
+          <div class="note">播报时暂停麦克风上行，避免回声重复翻译。</div>
+          <div class="note">中央按钮只用于方向误判纠正，不是正常操作步骤。</div>
+        </div>
+      </aside>
+
+      <section class="stage" aria-label="iPhone 界面预览">
+        <div class="phone">
+          <div id="phoneScreen" class="screen idle">
+            <div class="island" aria-hidden="true"></div>
+            <div class="status-bar"><span>9:42</span><span class="signal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20h3v-4H2v4zm5 0h3v-7H7v7zm5 0h3V9h-3v11zm5 0h3V4h-3v16z"/></svg><span>100%</span></span></div>
+
+            <section class="partner" aria-label="对方区域">
+              <div class="lang-row"><span class="live-dot"></span><span id="partnerLabel">English · Ready</span></div>
+              <div><p id="partnerText" class="translation">Ready when you are.</p><p id="partnerSource" class="source">The phone will translate automatically.</p></div>
+            </section>
+
+            <section class="status-zone" aria-label="对话状态">
+              <div class="wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="orbital" aria-hidden="true"></div>
+              <button id="directionButton" class="direction-button" type="button" aria-label="纠正翻译方向">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h15M15 3l4 4-4 4M20 17H5M9 13l-4 4 4 4"/></svg>
+              </button>
+              <span id="statusCopy" class="status-copy">准备开始</span>
+            </section>
+
+            <section class="local" aria-label="中文区域">
+              <div class="lang-row"><span id="localLabel">中文</span></div>
+              <div><p id="localText" class="translation">面对面放好手机，开始自然交谈。</p><p id="localSource" class="source">无需轮流按住按钮</p></div>
+            </section>
+
+            <nav class="toolbar" aria-label="会话操作">
+              <button class="tool-button" type="button" aria-label="查看文字记录">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h14M5 12h14M5 19h9"/></svg>
+              </button>
+              <button id="endButton" class="end-button" type="button">开始对话</button>
+              <button class="tool-button" type="button" aria-label="语言设置">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const copy = {
+      en: {
+        name: 'English', ready: 'Ready when you are.', readySub: 'The phone will translate automatically.',
+        foreign: 'Could you tell me how to get to the station?', native: '请问去车站怎么走？',
+        answer: '沿这条路直走，第二个路口右转。', translated: 'Go straight and turn right at the second corner.'
+      },
+      ja: {
+        name: '日本語', ready: '準備ができたら話してください。', readySub: '自動的に翻訳します。',
+        foreign: '駅までの行き方を教えていただけますか。', native: '请问去车站怎么走？',
+        answer: '沿这条路直走，第二个路口右转。', translated: 'この道をまっすぐ進んで、二つ目の角を右です。'
+      },
+      ko: {
+        name: '한국어', ready: '준비되면 말씀해 주세요.', readySub: '자동으로 번역해 드립니다.',
+        foreign: '역까지 어떻게 가는지 알려 주실 수 있나요?', native: '请问去车站怎么走？',
+        answer: '沿这条路直走，第二个路口右转。', translated: '이 길로 쭉 가서 두 번째 모퉁이에서 오른쪽으로 도세요.'
+      }
+    };
+
+    const states = [
+      { key: 'idle', title: '准备开始', desc: '面对面放好手机，点击开始对话。' },
+      { key: 'listenForeign', title: '正在听对方说话', desc: '实时识别对方语言，并逐步显示中文译文。' },
+      { key: 'playNative', title: '正在为你播报中文', desc: '播报期间暂停上传麦克风音频，防止回声。' },
+      { key: 'listenNative', title: '正在听你说话', desc: '这一轮结束后会自动翻成对方语言。' },
+      { key: 'playForeign', title: '正在为对方播报', desc: '播完后自动回到监听对方的状态。' }
+    ];
+
+    let language = 'en';
+    let stateIndex = 0;
+
+    const el = id => document.getElementById(id);
+    const screen = el('phoneScreen');
+
+    function render() {
+      const state = states[stateIndex];
+      const text = copy[language];
+      screen.className = 'screen ' + (state.key.startsWith('listen') ? 'listening' : state.key.startsWith('play') ? 'playing' : 'idle');
+      el('stateTitle').textContent = state.title;
+      el('stateDesc').textContent = state.desc;
+      el('statusCopy').textContent = state.title;
+      el('endButton').textContent = state.key === 'idle' ? '开始对话' : '结束';
+      el('startButton').querySelector('span').textContent = state.key === 'idle' ? '开始对话' : '重新开始';
+
+      if (state.key === 'idle') {
+        el('partnerLabel').textContent = text.name + ' · Ready';
+        el('partnerText').textContent = text.ready;
+        el('partnerSource').textContent = text.readySub;
+        el('localLabel').textContent = '中文';
+        el('localText').textContent = '面对面放好手机，开始自然交谈。';
+        el('localSource').textContent = '无需轮流按住按钮';
+      } else if (state.key === 'listenForeign' || state.key === 'playNative') {
+        el('partnerLabel').textContent = (state.key === 'listenForeign' ? 'Listening · ' : 'Waiting · ') + text.name;
+        el('partnerText').textContent = text.foreign;
+        el('partnerSource').textContent = 'Live transcript';
+        el('localLabel').textContent = '中文 · ' + (state.key === 'playNative' ? '正在播报' : '即将播报');
+        el('localText').textContent = text.native;
+        el('localSource').textContent = '原文：' + text.foreign;
+      } else {
+        el('partnerLabel').textContent = text.name + ' · ' + (state.key === 'playForeign' ? 'Speaking' : 'Waiting');
+        el('partnerText').textContent = text.translated;
+        el('partnerSource').textContent = state.key === 'playForeign' ? '正在播放译音' : '等待你的回答';
+        el('localLabel').textContent = '中文 · 你刚才说';
+        el('localText').textContent = text.answer;
+        el('localSource').textContent = '已进入中文回答方向';
+      }
+    }
+
+    document.querySelectorAll('[data-language]').forEach(button => {
+      button.addEventListener('click', () => {
+        language = button.dataset.language;
+        document.querySelectorAll('[data-language]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        render();
+      });
+    });
+
+    el('startButton').addEventListener('click', () => { stateIndex = 1; render(); });
+    el('nextButton').addEventListener('click', () => { stateIndex = (stateIndex + 1) % states.length; render(); });
+    el('endButton').addEventListener('click', () => { stateIndex = stateIndex === 0 ? 1 : 0; render(); });
+    el('directionButton').addEventListener('click', () => {
+      stateIndex = stateIndex === 1 || stateIndex === 2 ? 3 : 1;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
